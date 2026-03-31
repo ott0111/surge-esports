@@ -17,12 +17,62 @@
   --muted:#8a8a8a;
 }
 
-/* RESET */
 *{margin:0;padding:0;box-sizing:border-box;}
+
 body{
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
+}
+
+/* INTRO */
+#intro{
+  position:fixed;
+  inset:0;
+  background:#050505;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:9999;
+  text-align:center;
+}
+
+#intro.hide{
+  opacity:0;
+  pointer-events:none;
+  transition:.8s;
+}
+
+.intro-logo{
+  width:100px;
+  margin-bottom:1rem;
+  animation:pulse 2s infinite;
+}
+
+.intro-title{
+  font-family:'Bebas Neue';
+  font-size:2rem;
+  letter-spacing:.15em;
+}
+
+.intro-enter{
+  margin-top:2rem;
+  font-size:.7rem;
+  letter-spacing:.3em;
+  color:var(--muted);
+  animation:blink 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.1);}
+  100%{transform:scale(1);}
+}
+
+@keyframes blink{
+  0%,100%{opacity:1;}
+  50%{opacity:.3;}
 }
 
 /* NAV */
@@ -45,28 +95,25 @@ nav.scrolled{
 .logo{
   font-family:'Bebas Neue';
   font-size:1.6rem;
-  letter-spacing:.08em;
 }
 .logo span{color:var(--gold);}
 
 .nav-links{
   display:flex;
-  gap:2.5rem;
+  gap:2rem;
 }
 .nav-links a{
   text-decoration:none;
   color:var(--muted);
   font-size:.8rem;
-  letter-spacing:.18em;
 }
 .nav-links a:hover{color:var(--text);}
 
 .nav-btn{
   border:1px solid var(--line);
-  padding:.6rem 1.4rem;
+  padding:.5rem 1.3rem;
   text-decoration:none;
   font-size:.75rem;
-  letter-spacing:.2em;
 }
 .nav-btn:hover{
   border-color:var(--gold);
@@ -80,169 +127,65 @@ nav.scrolled{
   align-items:center;
   padding:0 5%;
 }
-.hero-content{
-  max-width:650px;
-}
-
-.hero-eyebrow{
-  color:var(--gold);
-  font-size:.7rem;
-  letter-spacing:.35em;
-  margin-bottom:1rem;
-}
 
 .hero-title{
   font-family:'Bebas Neue';
   font-size:clamp(4rem,9vw,8rem);
-  line-height:.9;
 }
-
-.hero-title span{
-  color:var(--gold);
-}
+.hero-title span{color:var(--gold);}
 
 .hero-text{
-  margin:1.5rem 0 2rem;
+  margin:1rem 0 2rem;
   color:var(--muted);
-  line-height:1.6;
-  max-width:500px;
-}
-
-.hero-btns{
-  display:flex;
-  gap:1rem;
 }
 
 .btn{
   padding:1rem 2rem;
   text-decoration:none;
   font-size:.75rem;
-  letter-spacing:.2em;
 }
+.primary{background:var(--gold);color:black;}
+.secondary{border:1px solid var(--line);color:white;}
 
-.btn.primary{
-  background:var(--gold);
-  color:black;
-}
-
-.btn.secondary{
-  border:1px solid var(--line);
-  color:var(--text);
-}
-.btn.secondary:hover{
-  border-color:var(--gold);
-  color:var(--gold);
-}
-
-/* SECTIONS */
+/* SECTION */
 .section{
   padding:6rem 5%;
   border-top:1px solid var(--line);
 }
 
-.container{
-  max-width:1200px;
-  margin:auto;
-}
-
-.section h2{
-  font-family:'Bebas Neue';
-  font-size:2.5rem;
-  margin-bottom:1rem;
-}
-
-.section h2 span{
-  color:var(--gold);
-}
-
-.section p{
-  color:var(--muted);
-  max-width:600px;
-  margin-bottom:3rem;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:1.5rem;
-}
-
-/* CARD */
 .card{
   background:var(--card);
   border:1px solid var(--line);
   padding:1.5rem;
-  transition:.3s;
-}
-.card:hover{
-  border-color:var(--gold);
-}
-
-/* NEWS */
-.news{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:1.5rem;
-}
-
-/* PARTNERS */
-.partners{
-  display:flex;
-  gap:1rem;
-  flex-wrap:wrap;
-}
-.partner{
-  padding:1rem 2rem;
-  border:1px solid var(--line);
-}
-.partner:hover{
-  border-color:var(--gold);
-}
-
-/* JOIN */
-.join{
-  text-align:center;
+  margin-top:1rem;
 }
 
 /* FOOTER */
 footer{
-  padding:2rem 5%;
-  border-top:1px solid var(--line);
+  padding:2rem;
   text-align:center;
+  border-top:1px solid var(--line);
   color:var(--muted);
-}
-
-/* ANIMATION */
-.reveal{
-  opacity:0;
-  transform:translateY(30px);
-  transition:.6s;
-}
-.reveal.active{
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* MOBILE */
-@media(max-width:900px){
-  .grid,.news{
-    grid-template-columns:1fr;
-  }
-  .nav-links{display:none;}
 }
 </style>
 </head>
 
 <body>
 
+<!-- INTRO -->
+<div id="intro">
+  <img src="IMG_1527.gif" class="intro-logo">
+  <div class="intro-title">SURGE ESPORTS</div>
+  <div class="intro-enter">PRESS ENTER</div>
+</div>
+
+<!-- SITE -->
 <nav id="nav">
   <div class="logo">SURGE <span>ESPORTS</span></div>
 
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#news">News</a>
-    <a href="#partners">Partners</a>
     <a href="#join">Join</a>
   </div>
 
@@ -250,97 +193,52 @@ footer{
 </nav>
 
 <section id="hero">
-  <div class="hero-content reveal">
-    <div class="hero-eyebrow">EST. 2024</div>
-
-    <h1 class="hero-title">
-      WE <span>SURGE</span>
-    </h1>
-
-    <p class="hero-text">
-      A competitive Fortnite organization focused on winning, growth, and building a real legacy.
-    </p>
-
-    <div class="hero-btns">
-      <a href="https://discord.gg/2gaCcjDcqa" class="btn primary">JOIN DISCORD</a>
-      <a href="#partners" class="btn secondary">PARTNERS</a>
-    </div>
+  <div>
+    <h1 class="hero-title">WE <span>SURGE</span></h1>
+    <p class="hero-text">Competitive Fortnite organization built to win.</p>
+    <a href="https://discord.gg/2gaCcjDcqa" class="btn primary">JOIN</a>
   </div>
 </section>
 
 <section id="about" class="section">
-  <div class="container">
-    <h2>ABOUT <span>US</span></h2>
-    <p>We are building a serious competitive Fortnite organization with long-term vision.</p>
-
-    <div class="grid">
-      <div class="card reveal">⚡ Hunger</div>
-      <div class="card reveal">🔥 Growth</div>
-      <div class="card reveal">🦅 Instinct</div>
-      <div class="card reveal">🤝 Community</div>
-    </div>
-  </div>
+  <h2>ABOUT</h2>
+  <div class="card">⚡ Hunger</div>
+  <div class="card">🔥 Growth</div>
 </section>
 
 <section id="news" class="section">
-  <div class="container">
-    <h2>NEWS <span>& UPDATES</span></h2>
-
-    <div class="news">
-      <div class="card reveal">Surge officially launches.</div>
-
-      <div>
-        <div class="card reveal">FNCS Entry</div>
-        <div class="card reveal">First Partner Soon</div>
-      </div>
-    </div>
-  </div>
+  <h2>NEWS</h2>
+  <div class="card">Surge launches</div>
 </section>
 
-<section id="partners" class="section">
-  <div class="container">
-    <h2>OUR <span>PARTNERS</span></h2>
-
-    <div class="partners">
-      <div class="partner reveal">Nexus</div>
-      <div class="partner reveal">HyperFrame</div>
-      <div class="partner reveal">Volt</div>
-    </div>
-  </div>
-</section>
-
-<section id="join" class="section join">
-  <div class="container reveal">
-    <h2>JOIN THE <span>SURGE</span></h2>
-    <p>Players, creators, and supporters welcome.</p>
-
-    <a href="https://discord.gg/2gaCcjDcqa" class="btn primary">
-      JOIN DISCORD
-    </a>
-  </div>
+<section id="join" class="section">
+  <h2>JOIN</h2>
+  <a href="https://discord.gg/2gaCcjDcqa" class="btn primary">JOIN DISCORD</a>
 </section>
 
 <footer>
-  © 2026 Surge Esports
+© 2026 Surge Esports
 </footer>
 
 <script>
-window.addEventListener('scroll',()=>{
-  document.getElementById('nav')
-  .classList.toggle('scrolled',window.scrollY>50);
+// PRESS ENTER INTRO
+const intro = document.getElementById("intro");
+
+function enterSite(){
+  intro.classList.add("hide");
+}
+
+document.addEventListener("keydown", e=>{
+  if(e.key === "Enter") enterSite();
 });
 
-const reveals=document.querySelectorAll('.reveal');
+intro.addEventListener("click", enterSite);
 
-function reveal(){
-  reveals.forEach(el=>{
-    if(el.getBoundingClientRect().top < window.innerHeight-80){
-      el.classList.add('active');
-    }
-  });
-}
-window.addEventListener('scroll',reveal);
-reveal();
+// NAV SCROLL
+window.addEventListener("scroll",()=>{
+  document.getElementById("nav")
+  .classList.toggle("scrolled",window.scrollY>50);
+});
 </script>
 
 </body>
