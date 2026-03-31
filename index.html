@@ -1,43 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Surge Esports</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --bg:#050505;
   --card:#0c0c0c;
+  --card2:#111;
   --line:#1a1a1a;
   --gold:#f5b800;
   --text:#fff;
   --muted:#9a9a9a;
 }
 
-/* RESET */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
-  overflow-x:hidden;
 }
 
-/* FUN START SCREEN */
-#fun{
+/* ===== BACKGROUND ===== */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(245,184,0,.05), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(245,184,0,.05), transparent 40%);
+  z-index:-1;
+}
+
+/* ===== INTRO SYSTEM ===== */
+#fun,#loader,#intro{
   position:fixed;inset:0;
   display:flex;align-items:center;justify-content:center;
   flex-direction:column;
   background:#050505;
   z-index:10000;
-  cursor:pointer;
 }
-.fun-text{
+
+#loader,#intro{opacity:0;pointer-events:none;}
+
+.fun-title{
   font-family:'Bebas Neue';
-  font-size:2rem;
+  font-size:2.5rem;
   letter-spacing:.2em;
 }
 .fun-sub{
@@ -48,59 +60,23 @@ body{
   animation:blink 1.5s infinite;
 }
 
-/* LOADING */
-#loader{
-  position:fixed;inset:0;
-  background:#050505;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  z-index:9999;
-  opacity:0;pointer-events:none;
-}
-#loader.active{opacity:1;pointer-events:auto;}
-
 .loader-bar{
-  width:220px;height:2px;
+  width:240px;height:2px;
   background:var(--line);
   margin-top:1.5rem;
-  overflow:hidden;
 }
 .loader-fill{
   height:100%;
   width:0%;
   background:var(--gold);
-  transition:width .3s;
-}
-.loader-text{
-  font-size:.7rem;
-  letter-spacing:.3em;
-  color:var(--muted);
-}
-
-/* ENTER SCREEN */
-#intro{
-  position:fixed;inset:0;
-  background:#050505;
-  display:flex;align-items:center;justify-content:center;
-  flex-direction:column;
-  z-index:9998;
-  opacity:0;pointer-events:none;
-}
-#intro.active{
-  opacity:1;pointer-events:auto;
-}
-#intro.hide{
-  opacity:0;pointer-events:none;
-  transition:.8s;
 }
 
 .intro-logo{
-  width:100px;
+  width:110px;
   animation:pulse 2s infinite;
 }
 .intro-title{
   font-family:'Bebas Neue';
-  letter-spacing:.2em;
   margin-top:1rem;
 }
 .intro-enter{
@@ -111,7 +87,7 @@ body{
   animation:blink 1.5s infinite;
 }
 
-/* NAV */
+/* ===== NAV ===== */
 nav{
   position:fixed;
   width:100%;
@@ -119,10 +95,10 @@ nav{
   justify-content:space-between;
   padding:1.2rem 6%;
   z-index:100;
-  backdrop-filter:blur(10px);
 }
 nav.scrolled{
   background:rgba(5,5,5,.7);
+  backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
 }
 
@@ -132,9 +108,7 @@ nav.scrolled{
 }
 .logo span{color:var(--gold);}
 
-.nav-links{
-  display:flex;gap:2rem;
-}
+.nav-links{display:flex;gap:2rem;}
 .nav-links a{
   color:var(--muted);
   text-decoration:none;
@@ -153,7 +127,7 @@ nav.scrolled{
   color:var(--gold);
 }
 
-/* HERO */
+/* ===== HERO ===== */
 #hero{
   height:100vh;
   display:flex;
@@ -169,7 +143,7 @@ nav.scrolled{
   text-shadow:0 0 20px rgba(245,184,0,.4);
 }
 .hero-text{
-  margin:1.5rem 0 2rem;
+  margin:1.5rem 0;
   color:var(--muted);
 }
 
@@ -179,37 +153,76 @@ nav.scrolled{
   font-size:.7rem;
   letter-spacing:.2em;
   text-decoration:none;
-  transition:.3s;
 }
 .primary{
   background:var(--gold);
   color:black;
 }
-.primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 30px rgba(245,184,0,.3);
-}
 
-/* SECTION */
+/* ===== SECTIONS ===== */
 .section{
   padding:7rem 6%;
   border-top:1px solid var(--line);
 }
+.section h2{
+  font-family:'Bebas Neue';
+  font-size:2.5rem;
+}
+.section h2 span{color:var(--gold);}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
 
 /* CARD */
 .card{
-  background:var(--card);
+  background:linear-gradient(145deg,var(--card),var(--card2));
   border:1px solid var(--line);
   padding:1.5rem;
-  margin-top:1rem;
   transition:.3s;
 }
 .card:hover{
+  transform:translateY(-6px);
   border-color:var(--gold);
-  transform:translateY(-5px);
 }
 
-/* FOOTER */
+/* ===== FOUNDERS ===== */
+.founder-card{
+  text-align:center;
+  padding:2rem 1.5rem;
+}
+.founder-img{
+  width:90px;height:90px;
+  border-radius:50%;
+  margin-bottom:1rem;
+  border:2px solid var(--line);
+}
+.founder-name{
+  font-family:'Bebas Neue';
+  font-size:1.2rem;
+}
+.founder-role{
+  font-size:.7rem;
+  letter-spacing:.2em;
+  color:var(--gold);
+  margin-bottom:.5rem;
+}
+.founder-desc{
+  font-size:.8rem;
+  color:var(--muted);
+}
+
+/* ===== NEWS ===== */
+.news{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:1.5rem;
+}
+
+/* ===== FOOTER ===== */
 footer{
   padding:2rem;
   text-align:center;
@@ -233,17 +246,17 @@ footer{
 
 <!-- FUN -->
 <div id="fun">
-  <div class="fun-text">SURGE SYSTEM</div>
-  <div class="fun-sub">CLICK TO BOOT</div>
+  <div class="fun-title">SURGE SYSTEM</div>
+  <div class="fun-sub">CLICK TO START</div>
 </div>
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-text">LOADING SYSTEM</div>
-  <div class="loader-bar"><div class="loader-fill" id="fill"></div></div>
+  <div>LOADING</div>
+  <div class="loader-bar"><div id="fill" class="loader-fill"></div></div>
 </div>
 
-<!-- ENTER -->
+<!-- INTRO -->
 <div id="intro">
   <img src="IMG_1527.gif" class="intro-logo">
   <div class="intro-title">SURGE ESPORTS</div>
@@ -255,6 +268,7 @@ footer{
   <div class="logo">SURGE <span>ESPORTS</span></div>
   <div class="nav-links">
     <a href="#about">About</a>
+    <a href="#founders">Founders</a>
     <a href="#news">News</a>
   </div>
   <a href="https://discord.gg/2gaCcjDcqa" class="nav-btn">DISCORD</a>
@@ -264,51 +278,104 @@ footer{
 <section id="hero">
   <div>
     <h1 class="hero-title">WE <span>SURGE</span></h1>
-    <p class="hero-text">Competitive Fortnite org built to win.</p>
+    <p class="hero-text">Built for competition. Designed to win.</p>
     <a href="https://discord.gg/2gaCcjDcqa" class="btn primary">JOIN</a>
   </div>
 </section>
 
+<!-- ABOUT -->
 <section id="about" class="section">
-  <h2>ABOUT</h2>
-  <div class="card">⚡ Hunger</div>
-  <div class="card">🔥 Growth</div>
+  <h2>ABOUT <span>SURGE</span></h2>
+  <p style="max-width:700px;color:var(--muted);margin-bottom:2rem;">
+    Founded by Frank and Noxxa, Surge Esports is a sister organization to Void Esports,
+    built to expand the competitive ecosystem and develop new talent.
+  </p>
+
+  <div class="grid">
+    <div class="card">⚡ Competitive Focus</div>
+    <div class="card">🔥 Player Development</div>
+    <div class="card">🦅 Expansion Vision</div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section id="founders" class="section">
+  <h2>FOUNDERS <span>& LEADERSHIP</span></h2>
+
+  <div class="grid">
+
+    <div class="card founder-card">
+      <img src="https://via.placeholder.com/100" class="founder-img">
+      <div class="founder-name">Frank</div>
+      <div class="founder-role">CO-FOUNDER</div>
+      <div class="founder-desc">
+        Oversees operations, structure, and long-term growth of the Surge ecosystem.
+      </div>
+    </div>
+
+    <div class="card founder-card">
+      <img src="https://via.placeholder.com/100" class="founder-img">
+      <div class="founder-name">Noxxa</div>
+      <div class="founder-role">CO-FOUNDER</div>
+      <div class="founder-desc">
+        Focused on competitive direction, recruitment, and player development.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news" class="section">
+  <h2>NEWS <span>& UPDATES</span></h2>
+
+  <div class="news">
+
+    <div class="card">
+      <h3>Surge Officially Launches</h3>
+      <p style="color:var(--muted);font-size:.85rem;">
+        Founded by Frank and Noxxa, Surge expands the Void Esports ecosystem into new competitive territory.
+      </p>
+    </div>
+
+    <div>
+      <div class="card">FNCS Prep Begins</div>
+      <div class="card">Roster Recruitment Open</div>
+      <div class="card">Void x Surge Expansion</div>
+    </div>
+
+  </div>
 </section>
 
 <footer>© 2026 Surge Esports</footer>
 
 <script>
-// FLOW
-const fun = document.getElementById("fun");
-const loader = document.getElementById("loader");
-const intro = document.getElementById("intro");
-const fill = document.getElementById("fill");
+const fun=document.getElementById("fun");
+const loader=document.getElementById("loader");
+const intro=document.getElementById("intro");
+const fill=document.getElementById("fill");
 
-// STEP 1 → CLICK
-fun.onclick = () => {
+fun.onclick=()=>{
   fun.style.display="none";
-  loader.classList.add("active");
+  loader.style.opacity=1;
 
-  let progress = 0;
-  let interval = setInterval(()=>{
-    progress+=10;
-    fill.style.width = progress+"%";
-
-    if(progress>=100){
-      clearInterval(interval);
+  let p=0;
+  let i=setInterval(()=>{
+    p+=10;
+    fill.style.width=p+"%";
+    if(p>=100){
+      clearInterval(i);
       loader.style.display="none";
-      intro.classList.add("active");
+      intro.style.opacity=1;
     }
   },150);
 };
 
-// STEP 3 → ENTER
-document.addEventListener("keydown", e=>{
+document.addEventListener("keydown",e=>{
   if(e.key==="Enter") intro.classList.add("hide");
 });
-intro.onclick = ()=> intro.classList.add("hide");
+intro.onclick=()=>intro.classList.add("hide");
 
-// NAV
 window.addEventListener("scroll",()=>{
   document.getElementById("nav")
   .classList.toggle("scrolled",window.scrollY>50);
