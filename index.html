@@ -5,161 +5,196 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Surge Esports</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
 <style>
 :root{
-  --black:#050401;
-  --dark:#0c0a02;
-  --card:#110e03;
+  --bg:#050505;
+  --card:#0d0d0d;
+  --line:#1a1a1a;
   --gold:#f5b800;
-  --white:#f5f0e8;
-  --muted:#7a6d45;
-  --border:rgba(245,184,0,.2);
+  --text:#ffffff;
+  --muted:#8a8a8a;
 }
 
 /* RESET */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
-  font-family:'Rajdhani',sans-serif;
-  background:var(--black);
-  color:var(--white);
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
 /* NAV */
 nav{
-  position:fixed;top:0;width:100%;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:1.5rem 4rem;
+  position:fixed;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1.2rem 5%;
   z-index:100;
   transition:.3s;
 }
 nav.scrolled{
-  background:rgba(5,4,1,.9);
+  background:rgba(5,5,5,.85);
   backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid var(--line);
 }
-.nav-logo{
+
+.logo{
   font-family:'Bebas Neue';
   font-size:1.6rem;
-  letter-spacing:.1em;
+  letter-spacing:.08em;
 }
-.nav-logo span{color:var(--gold);}
+.logo span{color:var(--gold);}
+
 .nav-links{
-  display:flex;gap:2rem;list-style:none;
+  display:flex;
+  gap:2.5rem;
 }
 .nav-links a{
   text-decoration:none;
   color:var(--muted);
   font-size:.8rem;
+  letter-spacing:.18em;
+}
+.nav-links a:hover{color:var(--text);}
+
+.nav-btn{
+  border:1px solid var(--line);
+  padding:.6rem 1.4rem;
+  text-decoration:none;
+  font-size:.75rem;
   letter-spacing:.2em;
 }
-.nav-links a:hover{color:var(--gold);}
-.nav-btn{
-  background:var(--gold);
-  color:black;
-  padding:.6rem 1.5rem;
-  font-weight:700;
-  text-decoration:none;
+.nav-btn:hover{
+  border-color:var(--gold);
+  color:var(--gold);
 }
 
 /* HERO */
 #hero{
-  min-height:100vh;
+  height:100vh;
   display:flex;
   align-items:center;
-  padding:0 4rem;
-  background:radial-gradient(circle at 70% 50%, rgba(245,184,0,.08), transparent);
+  padding:0 5%;
 }
 .hero-content{
-  max-width:700px;
+  max-width:650px;
 }
+
+.hero-eyebrow{
+  color:var(--gold);
+  font-size:.7rem;
+  letter-spacing:.35em;
+  margin-bottom:1rem;
+}
+
 .hero-title{
   font-family:'Bebas Neue';
-  font-size:clamp(4rem,10vw,9rem);
+  font-size:clamp(4rem,9vw,8rem);
   line-height:.9;
 }
-.hero-title span{color:var(--gold);}
+
+.hero-title span{
+  color:var(--gold);
+}
+
 .hero-text{
-  margin:1.5rem 0;
+  margin:1.5rem 0 2rem;
   color:var(--muted);
   line-height:1.6;
+  max-width:500px;
 }
+
 .hero-btns{
-  display:flex;gap:1rem;
+  display:flex;
+  gap:1rem;
 }
+
 .btn{
   padding:1rem 2rem;
   text-decoration:none;
-  font-size:.8rem;
+  font-size:.75rem;
   letter-spacing:.2em;
 }
-.btn.gold{background:var(--gold);color:black;}
-.btn.outline{
-  border:1px solid var(--border);
-  color:var(--white);
+
+.btn.primary{
+  background:var(--gold);
+  color:black;
+}
+
+.btn.secondary{
+  border:1px solid var(--line);
+  color:var(--text);
+}
+.btn.secondary:hover{
+  border-color:var(--gold);
+  color:var(--gold);
 }
 
 /* SECTIONS */
 .section{
-  padding:7rem 4rem;
+  padding:6rem 5%;
+  border-top:1px solid var(--line);
 }
+
 .container{
   max-width:1200px;
   margin:auto;
 }
 
-/* TITLES */
-.sec-title{
+.section h2{
   font-family:'Bebas Neue';
-  font-size:3rem;
-}
-.sec-title span{color:var(--gold);}
-.sec-sub{
-  color:var(--muted);
-  margin-bottom:2rem;
+  font-size:2.5rem;
+  margin-bottom:1rem;
 }
 
-/* ABOUT */
-.about-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:4rem;
+.section h2 span{
+  color:var(--gold);
 }
+
+.section p{
+  color:var(--muted);
+  max-width:600px;
+  margin-bottom:3rem;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1.5rem;
+}
+
+/* CARD */
 .card{
-  border:1px solid var(--border);
+  background:var(--card);
+  border:1px solid var(--line);
   padding:1.5rem;
   transition:.3s;
 }
 .card:hover{
   border-color:var(--gold);
-  transform:translateY(-5px);
 }
 
 /* NEWS */
-.news-grid{
+.news{
   display:grid;
   grid-template-columns:2fr 1fr;
-  gap:1rem;
-}
-.news-main,.news-small{
-  border:1px solid var(--border);
-  padding:1.5rem;
-  transition:.3s;
-}
-.news-main:hover,.news-small:hover{
-  border-color:var(--gold);
+  gap:1.5rem;
 }
 
 /* PARTNERS */
 .partners{
   display:flex;
-  flex-wrap:wrap;
   gap:1rem;
+  flex-wrap:wrap;
 }
 .partner{
-  border:1px solid var(--border);
   padding:1rem 2rem;
+  border:1px solid var(--line);
 }
 .partner:hover{
   border-color:var(--gold);
@@ -172,16 +207,16 @@ nav.scrolled{
 
 /* FOOTER */
 footer{
-  padding:3rem 4rem;
-  border-top:1px solid var(--border);
+  padding:2rem 5%;
+  border-top:1px solid var(--line);
   text-align:center;
   color:var(--muted);
 }
 
-/* REVEAL */
+/* ANIMATION */
 .reveal{
   opacity:0;
-  transform:translateY(40px);
+  transform:translateY(30px);
   transition:.6s;
 }
 .reveal.active{
@@ -189,14 +224,12 @@ footer{
   transform:translateY(0);
 }
 
-/* RESPONSIVE */
+/* MOBILE */
 @media(max-width:900px){
-  .about-grid,.news-grid{
+  .grid,.news{
     grid-template-columns:1fr;
   }
-  nav{padding:1rem;}
-  #hero{padding:2rem;}
-  .section{padding:4rem 1rem;}
+  .nav-links{display:none;}
 }
 </style>
 </head>
@@ -204,39 +237,43 @@ footer{
 <body>
 
 <nav id="nav">
-  <div class="nav-logo">SURGE <span>ESPORTS</span></div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#news">News</a></li>
-    <li><a href="#partners">Partners</a></li>
-    <li><a href="#join">Join</a></li>
-  </ul>
-  <a href="#" class="nav-btn">Discord</a>
+  <div class="logo">SURGE <span>ESPORTS</span></div>
+
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#news">News</a>
+    <a href="#partners">Partners</a>
+    <a href="#join">Join</a>
+  </div>
+
+  <a href="https://discord.gg/2gaCcjDcqa" class="nav-btn">DISCORD</a>
 </nav>
 
 <section id="hero">
   <div class="hero-content reveal">
-    <h1 class="hero-title">WE <span>SURGE</span></h1>
+    <div class="hero-eyebrow">EST. 2024</div>
+
+    <h1 class="hero-title">
+      WE <span>SURGE</span>
+    </h1>
+
     <p class="hero-text">
-      A competitive Fortnite organization built on hunger, discipline, and winning.
+      A competitive Fortnite organization focused on winning, growth, and building a real legacy.
     </p>
+
     <div class="hero-btns">
-      <a href="#news" class="btn gold">Latest News</a>
-      <a href="#partners" class="btn outline">Partners</a>
+      <a href="https://discord.gg/2gaCcjDcqa" class="btn primary">JOIN DISCORD</a>
+      <a href="#partners" class="btn secondary">PARTNERS</a>
     </div>
   </div>
 </section>
 
 <section id="about" class="section">
   <div class="container">
-    <h2 class="sec-title">About <span>Us</span></h2>
-    <p class="sec-sub">Built different. Built to win.</p>
+    <h2>ABOUT <span>US</span></h2>
+    <p>We are building a serious competitive Fortnite organization with long-term vision.</p>
 
-    <div class="about-grid">
-      <div class="reveal">
-        <p>Surge Esports is an upcoming Fortnite org focused on growth and competition.</p>
-      </div>
-
+    <div class="grid">
       <div class="card reveal">⚡ Hunger</div>
       <div class="card reveal">🔥 Growth</div>
       <div class="card reveal">🦅 Instinct</div>
@@ -247,16 +284,14 @@ footer{
 
 <section id="news" class="section">
   <div class="container">
-    <h2 class="sec-title">Latest <span>News</span></h2>
+    <h2>NEWS <span>& UPDATES</span></h2>
 
-    <div class="news-grid">
-      <div class="news-main reveal">
-        Surge Esports launches officially.
-      </div>
+    <div class="news">
+      <div class="card reveal">Surge officially launches.</div>
 
       <div>
-        <div class="news-small reveal">FIRST PRO</div>
-        <div class="news-small reveal">First Partner Soon</div>
+        <div class="card reveal">FNCS Entry</div>
+        <div class="card reveal">First Partner Soon</div>
       </div>
     </div>
   </div>
@@ -264,41 +299,42 @@ footer{
 
 <section id="partners" class="section">
   <div class="container">
-    <h2 class="sec-title">Our <span>Partners</span></h2>
+    <h2>OUR <span>PARTNERS</span></h2>
 
     <div class="partners">
-      <div class="partner reveal">Untitled</div>
-      <div class="partner reveal">Untitled</div>
-      <div class="partner reveal">Untitled</div>
+      <div class="partner reveal">Nexus</div>
+      <div class="partner reveal">HyperFrame</div>
+      <div class="partner reveal">Volt</div>
     </div>
   </div>
 </section>
 
 <section id="join" class="section join">
   <div class="container reveal">
-    <h2 class="sec-title">Join the <span>Surge</span></h2>
-    <p class="sec-sub">Players, creators, and fans welcome.</p>
-    <a href="#" class="btn gold">Join Discord</a>
+    <h2>JOIN THE <span>SURGE</span></h2>
+    <p>Players, creators, and supporters welcome.</p>
+
+    <a href="https://discord.gg/2gaCcjDcqa" class="btn primary">
+      JOIN DISCORD
+    </a>
   </div>
 </section>
 
 <footer>
-  © 2025 Surge Esports
+  © 2026 Surge Esports
 </footer>
 
 <script>
-// NAV SCROLL
 window.addEventListener('scroll',()=>{
   document.getElementById('nav')
   .classList.toggle('scrolled',window.scrollY>50);
 });
 
-// SCROLL REVEAL
 const reveals=document.querySelectorAll('.reveal');
 
 function reveal(){
   reveals.forEach(el=>{
-    if(el.getBoundingClientRect().top < window.innerHeight-100){
+    if(el.getBoundingClientRect().top < window.innerHeight-80){
       el.classList.add('active');
     }
   });
