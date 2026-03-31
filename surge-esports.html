@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surge Esports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black:   #050401;
+      --dark:    #0c0a02;
+      --card:    #110e03;
+      --gold:    #f5b800;
+      --gold2:   #ffd95a;
+      --gold-dim: rgba(245,184,0,0.15);
+      --white:   #f5f0e8;
+      --muted:   #6b6040;
+      --border:  rgba(245,184,0,0.18);
+      --glow:    0 0 40px rgba(245,184,0,0.3);
+      --glow-sm: 0 0 16px rgba(245,184,0,0.2);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR */
+    #cur { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform .08s; mix-blend-mode:difference; }
+    #cur-r { position:fixed; width:32px; height:32px; border:1px solid var(--gold); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all .18s ease; opacity:.5; }
+
+    /* NOISE */
+    body::after {
+      content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity:.03;
+    }
+
+    /* NAV */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1.4rem 5rem;
+      transition:background .4s, border-color .4s, backdrop-filter .4s;
+      border-bottom:1px solid transparent;
+    }
+    nav.scrolled { background:rgba(5,4,1,0.9); border-color:var(--border); backdrop-filter:blur(20px); }
+    .nav-logo { display:flex; align-items:center; gap:.9rem; text-decoration:none; color:var(--white); }
+    .nav-logo img { width:38px; height:38px; object-fit:contain; filter:drop-shadow(0 0 8px rgba(245,184,0,0.6)); }
+    .nav-logo-text { font-family:'Bebas Neue', sans-serif; font-size:1.6rem; letter-spacing:.12em; }
+    .nav-logo-text span { color:var(--gold); }
+    .nav-links { display:flex; gap:3rem; list-style:none; }
+    .nav-links a { font-size:.78rem; letter-spacing:.22em; text-transform:uppercase; text-decoration:none; color:var(--muted); transition:color .2s; font-weight:600; }
+    .nav-links a:hover { color:var(--gold); }
+    .nav-disc { font-size:.75rem; letter-spacing:.2em; text-transform:uppercase; text-decoration:none; padding:.6rem 1.6rem; background:var(--gold); color:var(--black); font-weight:700; transition:box-shadow .2s, transform .15s; clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); }
+    .nav-disc:hover { box-shadow:var(--glow); transform:translateY(-1px); }
+
+    /* HERO */
+    #hero { min-height:100vh; position:relative; display:flex; align-items:center; overflow:hidden; }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 70% 70% at 65% 50%, rgba(245,184,0,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 60% at 80% 30%, rgba(245,184,0,0.05) 0%, transparent 60%),
+        linear-gradient(160deg, #0c0a02 0%, #050401 60%);
+    }
+    .hero-stripes {
+      position:absolute; inset:0; pointer-events:none;
+      background-image:repeating-linear-gradient(-55deg, transparent, transparent 60px, rgba(245,184,0,0.015) 60px, rgba(245,184,0,0.015) 61px);
+    }
+    .hero-watermark {
+      position:absolute; right:-5%; top:50%; transform:translateY(-50%);
+      width:620px; height:620px; opacity:.06; pointer-events:none;
+    }
+    .hero-watermark img { width:100%; height:100%; object-fit:contain; filter:brightness(0) invert(1); }
+    .hero-eagle {
+      position:absolute; right:8%; top:50%; transform:translateY(-50%);
+      width:460px; height:460px;
+      filter:drop-shadow(0 0 60px rgba(245,184,0,0.4)) drop-shadow(0 0 120px rgba(245,184,0,0.15));
+      animation:eaglePulse 5s ease-in-out infinite alternate;
+    }
+    .hero-eagle img { width:100%; height:100%; object-fit:contain; }
+    @keyframes eaglePulse {
+      from{filter:drop-shadow(0 0 50px rgba(245,184,0,0.3)) drop-shadow(0 0 100px rgba(245,184,0,0.12))}
+      to{filter:drop-shadow(0 0 90px rgba(245,184,0,0.6)) drop-shadow(0 0 180px rgba(245,184,0,0.22))}
+    }
+    .hero-content { position:relative; z-index:2; padding:0 5rem; max-width:760px; }
+    .hero-eyebrow { display:inline-flex; align-items:center; gap:.7rem; font-size:.72rem; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:1.8rem; animation:fadeUp .7s ease both; }
+    .hero-eyebrow::before { content:''; width:30px; height:1px; background:var(--gold); }
+    .hero-title { font-family:'Bebas Neue', sans-serif; font-size:clamp(5rem, 11vw, 10rem); line-height:.88; letter-spacing:.02em; animation:fadeUp .7s .12s ease both; }
+    .hero-title .accent { color:var(--gold); display:block; }
+    .hero-title .stroke { -webkit-text-stroke:2px var(--white); color:transparent; display:block; }
+    .hero-tagline { font-family:'DM Sans', sans-serif; font-size:1.05rem; color:var(--muted); font-weight:300; margin:1.8rem 0 2.8rem; line-height:1.65; max-width:480px; animation:fadeUp .7s .24s ease both; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; animation:fadeUp .7s .36s ease both; }
+    .btn-gold { font-size:.8rem; letter-spacing:.2em; text-transform:uppercase; text-decoration:none; padding:1rem 2.5rem; background:var(--gold); color:var(--black); font-weight:700; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); transition:box-shadow .2s, transform .15s; }
+    .btn-gold:hover { box-shadow:var(--glow); transform:translateY(-2px); }
+    .btn-outline { font-size:.8rem; letter-spacing:.2em; text-transform:uppercase; text-decoration:none; padding:1rem 2.5rem; border:1px solid var(--border); color:var(--white); font-weight:600; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); transition:border-color .2s, color .2s; }
+    .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+    .hero-badge { display:inline-flex; align-items:center; gap:.7rem; border:1px solid var(--border); padding:.7rem 1.4rem; margin-top:2.5rem; animation:fadeUp .7s .48s ease both; }
+    .fn-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); animation:blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .fn-text { font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+    .fn-text strong { color:var(--gold); }
+    .scroll-ln { position:absolute; bottom:2.5rem; left:5rem; display:flex; align-items:center; gap:1rem; animation:fadeUp .7s .9s ease both; }
+    .scroll-ln span { font-size:.65rem; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
+    .s-track { width:60px; height:1px; background:var(--border); position:relative; overflow:hidden; }
+    .s-fill { position:absolute; top:0; left:-100%; width:100%; height:100%; background:var(--gold); animation:scanLine 2s ease-in-out infinite; }
+    @keyframes scanLine { from{left:-100%} to{left:100%} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+    /* SHARED */
+    .section-pad { padding:9rem 0; position:relative; z-index:1; }
+    .container { max-width:1200px; margin:0 auto; padding:0 5rem; }
+    .sec-label { font-size:.7rem; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:.8rem; display:flex; align-items:center; gap:.8rem; }
+    .sec-label::before { content:''; width:24px; height:1px; background:var(--gold); }
+    .sec-title { font-family:'Bebas Neue', sans-serif; font-size:clamp(2.5rem, 5vw, 4.5rem); letter-spacing:.04em; line-height:1; }
+    .sec-title em { font-style:normal; color:var(--gold); }
+    .gold-rule { width:48px; height:2px; background:var(--gold); margin:1.4rem 0 2.2rem; }
+
+    /* ABOUT */
+    #about { background:var(--dark); }
+    .about-wrap { display:grid; grid-template-columns:1fr 1fr; gap:8rem; align-items:center; }
+    .about-left p { font-family:'DM Sans', sans-serif; font-size:.98rem; color:var(--muted); line-height:1.85; margin-bottom:1.2rem; }
+    .about-left p strong { color:var(--white); }
+    .about-values { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2.2rem; }
+    .val-box { border:1px solid var(--border); padding:1.2rem; transition:border-color .3s, box-shadow .3s; }
+    .val-box:hover { border-color:var(--gold); box-shadow:var(--glow-sm); }
+    .val-icon { font-size:1.4rem; margin-bottom:.5rem; }
+    .val-title { font-size:.88rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; margin-bottom:.3rem; }
+    .val-desc { font-family:'DM Sans', sans-serif; font-size:.82rem; color:var(--muted); }
+    .about-right { position:relative; display:flex; align-items:center; justify-content:center; }
+    .about-eagle-wrap { position:relative; width:360px; height:360px; display:flex; align-items:center; justify-content:center; }
+    .ae-ring { position:absolute; border-radius:50%; border:1px solid var(--border); animation:spinRing 20s linear infinite; }
+    .ae-ring:nth-child(1) { inset:-50px; }
+    .ae-ring:nth-child(2) { inset:-20px; border-style:dashed; animation-duration:14s; animation-direction:reverse; }
+    .ae-ring::after { content:''; position:absolute; top:-5px; left:50%; transform:translateX(-50%); width:9px; height:9px; border-radius:50%; background:var(--gold); box-shadow:var(--glow); }
+    @keyframes spinRing { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .ae-img { width:270px; height:270px; object-fit:contain; filter:drop-shadow(0 0 40px rgba(245,184,0,0.45)); }
+    .ae-corner { position:absolute; width:16px; height:16px; border-color:var(--gold); border-style:solid; }
+    .ae-corner.tl { top:0; left:0; border-width:2px 0 0 2px; }
+    .ae-corner.tr { top:0; right:0; border-width:2px 2px 0 0; }
+    .ae-corner.bl { bottom:0; left:0; border-width:0 0 2px 2px; }
+    .ae-corner.br { bottom:0; right:0; border-width:0 2px 2px 0; }
+
+    /* NEWS */
+    #news { background:var(--black); }
+    .news-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3rem; }
+    .news-all { font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; text-decoration:none; color:var(--gold); font-weight:700; border-bottom:1px solid var(--border); padding-bottom:.2rem; transition:border-color .2s; }
+    .news-all:hover { border-color:var(--gold); }
+    .news-grid { display:grid; grid-template-columns:1.8fr 1fr; gap:1.5rem; }
+    .news-big { border:1px solid var(--border); overflow:hidden; cursor:pointer; transition:border-color .3s, transform .3s; display:flex; flex-direction:column; }
+    .news-big:hover { border-color:var(--gold); transform:translateY(-4px); }
+    .news-big:hover .nb-img-inner { transform:scale(1.05); }
+    .nb-img { aspect-ratio:16/9; overflow:hidden; background:var(--card); position:relative; }
+    .nb-img-inner { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:5rem; transition:transform .5s; background:linear-gradient(135deg, #110e03, #1a1500); }
+    .news-tag-pill { position:absolute; bottom:1rem; left:1rem; font-size:.62rem; letter-spacing:.25em; text-transform:uppercase; background:var(--gold); color:var(--black); font-weight:700; padding:.3rem .8rem; }
+    .nb-body { padding:1.8rem; flex:1; }
+    .nb-title { font-family:'Bebas Neue', sans-serif; font-size:1.7rem; letter-spacing:.04em; line-height:1.15; margin-bottom:.8rem; }
+    .nb-excerpt { font-family:'DM Sans', sans-serif; font-size:.88rem; color:var(--muted); line-height:1.7; }
+    .nb-meta { font-size:.72rem; color:var(--muted); margin-top:1.2rem; letter-spacing:.05em; }
+    .news-stack { display:flex; flex-direction:column; gap:1rem; }
+    .ns-card { border:1px solid var(--border); padding:1.4rem; cursor:pointer; transition:border-color .3s, background .3s; display:flex; flex-direction:column; gap:.5rem; }
+    .ns-card:hover { border-color:var(--gold); background:var(--card); }
+    .ns-tag { font-size:.62rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); font-weight:700; }
+    .ns-title { font-family:'Bebas Neue', sans-serif; font-size:1.15rem; letter-spacing:.04em; line-height:1.2; }
+    .ns-meta { font-size:.72rem; color:var(--muted); }
+
+    /* PARTNERS */
+    #partners { background:var(--dark); }
+    .partners-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3.5rem; }
+    .partner-cta-note { font-family:'DM Sans', sans-serif; font-size:.88rem; color:var(--muted); max-width:360px; text-align:right; line-height:1.6; }
+    .partner-tier { margin-bottom:3rem; }
+    .tier-name { font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:1.2rem; display:flex; align-items:center; gap:1rem; }
+    .tier-name::after { content:''; flex:1; height:1px; background:var(--border); }
+    .partner-row { display:flex; gap:1rem; flex-wrap:wrap; }
+    .p-logo { border:1px solid var(--border); padding:1.5rem 2.8rem; display:flex; align-items:center; justify-content:center; min-width:160px; transition:border-color .3s, box-shadow .3s; cursor:default; }
+    .p-logo:hover { border-color:var(--gold); box-shadow:var(--glow-sm); }
+    .p-logo span { font-family:'Bebas Neue', sans-serif; letter-spacing:.12em; font-size:1.1rem; color:var(--muted); }
+    .p-logo:hover span { color:var(--gold); }
+    .partner-cta-box { margin-top:3rem; border:1px dashed var(--border); padding:2.5rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; transition:border-color .3s; }
+    .partner-cta-box:hover { border-color:rgba(245,184,0,0.4); }
+    .pcb-text h3 { font-family:'Bebas Neue', sans-serif; font-size:1.8rem; letter-spacing:.06em; }
+    .pcb-text p { font-family:'DM Sans', sans-serif; font-size:.88rem; color:var(--muted); margin-top:.4rem; }
+
+    /* JOIN */
+    #join { background:var(--black); position:relative; overflow:hidden; }
+    #join::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 80% at 50% 50%, rgba(245,184,0,0.06) 0%, transparent 70%); }
+    .join-inner { position:relative; text-align:center; max-width:700px; margin:0 auto; }
+    .join-inner .sec-title { font-size:clamp(3rem, 7vw, 6rem); margin-bottom:1rem; }
+    .join-inner p { font-family:'DM Sans', sans-serif; font-size:1rem; color:var(--muted); line-height:1.7; margin-bottom:2.5rem; }
+    .join-eagle { width:90px; height:90px; object-fit:contain; margin:0 auto 2rem; filter:drop-shadow(0 0 20px rgba(245,184,0,0.5)); display:block; animation:eaglePulse 4s ease-in-out infinite alternate; }
+    .join-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .join-inner .sec-label { justify-content:center; }
+
+    /* FOOTER */
+    footer { background:var(--dark); border-top:1px solid var(--border); padding:4rem 0 2rem; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:4rem; margin-bottom:3rem; }
+    .f-brand p { font-family:'DM Sans', sans-serif; font-size:.85rem; color:var(--muted); line-height:1.7; max-width:280px; margin-top:.7rem; }
+    .f-socials { display:flex; gap:.7rem; margin-top:1.5rem; }
+    .soc { width:36px; height:36px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; text-decoration:none; color:var(--muted); font-size:.85rem; transition:border-color .2s, color .2s, box-shadow .2s; }
+    .soc:hover { border-color:var(--gold); color:var(--gold); box-shadow:var(--glow-sm); }
+    .f-col h5 { font-size:.72rem; letter-spacing:.25em; text-transform:uppercase; font-weight:700; color:var(--white); margin-bottom:1.2rem; }
+    .f-col ul { list-style:none; display:flex; flex-direction:column; gap:.7rem; }
+    .f-col a { font-family:'DM Sans', sans-serif; font-size:.85rem; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .f-col a:hover { color:var(--gold); }
+    .footer-bottom { border-top:1px solid var(--border); padding-top:2rem; display:flex; justify-content:space-between; align-items:center; }
+    .footer-bottom p { font-family:'DM Sans', sans-serif; font-size:.75rem; color:var(--muted); }
+    .footer-bottom span { color:var(--gold); }
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      nav,.hero-content,.container,.scroll-ln{ padding-left:2.5rem; padding-right:2.5rem; }
+      .hero-eagle{ width:300px; height:300px; right:1%; }
+      .about-wrap{ grid-template-columns:1fr; gap:4rem; }
+      .about-right{ display:none; }
+      .news-grid{ grid-template-columns:1fr; }
+      .footer-grid{ grid-template-columns:1fr 1fr; }
+      .partners-header{ flex-direction:column; align-items:flex-start; gap:1rem; }
+      .partner-cta-note{ text-align:left; }
+    }
+    @media(max-width:640px){
+      nav{ padding:1rem 1.2rem; }
+      .nav-links{ display:none; }
+      .hero-content{ padding:0 1.2rem; }
+      .hero-eagle{ display:none; }
+      .container{ padding:0 1.2rem; }
+      .partner-cta-box{ flex-direction:column; align-items:flex-start; }
+      .footer-grid{ grid-template-columns:1fr; }
+      .scroll-ln{ left:1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <img src="IMG_1527.gif" alt="Surge Esports Logo"/>
+    <div class="nav-logo-text">SURGE <span>ESPORTS</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#partners">Partners</a></li>
+    <li><a href="#join">Join</a></li>
+  </ul>
+  <a href="https://discord.gg/" class="nav-disc">Join Discord</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stripes"></div>
+  <div class="hero-watermark"><img src="IMG_1527.gif" alt=""/></div>
+  <div class="hero-eagle"><img src="IMG_1527.gif" alt="Surge Eagle"/></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Surge Esports · Est. 2024</div>
+    <h1 class="hero-title">
+      <span class="stroke">WE</span>
+      <span class="accent">SURGE.</span>
+    </h1>
+    <p class="hero-tagline">A competitive Fortnite organization built on hunger, discipline, and the unshakeable belief that the next win is always within reach.</p>
+    <div class="hero-btns">
+      <a href="#news" class="btn-gold">Latest News</a>
+      <a href="#partners" class="btn-outline">Our Partners</a>
+    </div>
+    <div class="hero-badge">
+      <div class="fn-dot"></div>
+      <div class="fn-text">Competing in <strong>Fortnite</strong> — FNCS & Open Events</div>
+    </div>
+  </div>
+
+  <div class="scroll-ln">
+    <span>Scroll</span>
+    <div class="s-track"><div class="s-fill"></div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section-pad">
+  <div class="container">
+    <div class="about-wrap">
+      <div class="about-left">
+        <div class="sec-label">Who We Are</div>
+        <h2 class="sec-title">Born to <em>Compete</em>.</h2>
+        <div class="gold-rule"></div>
+        <p>Surge Esports is an <strong>upcoming competitive Fortnite organization</strong> with one goal: rise to the top. We're building something real — an org that takes player development, community, and competition as seriously as the game itself.</p>
+        <p>We're not here to follow the scene. We're here to push it. Every squad, every scrim, every tournament is a step toward the top of the leaderboard — and we don't stop until we get there.</p>
+        <div class="about-values">
+          <div class="val-box">
+            <div class="val-icon">⚡</div>
+            <div class="val-title">Hunger</div>
+            <div class="val-desc">We compete with purpose. Every match matters.</div>
+          </div>
+          <div class="val-box">
+            <div class="val-icon">🦅</div>
+            <div class="val-title">Instinct</div>
+            <div class="val-desc">Sharp reads, faster reactions, winning decisions.</div>
+          </div>
+          <div class="val-box">
+            <div class="val-icon">🔥</div>
+            <div class="val-title">Growth</div>
+            <div class="val-desc">Every loss is a lesson. We never stop improving.</div>
+          </div>
+          <div class="val-box">
+            <div class="val-icon">🤝</div>
+            <div class="val-title">Community</div>
+            <div class="val-desc">Our fanbase fuels us. We build together.</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-right">
+        <div class="about-eagle-wrap">
+          <div class="ae-ring"></div>
+          <div class="ae-ring"></div>
+          <div class="ae-corner tl"></div>
+          <div class="ae-corner tr"></div>
+          <div class="ae-corner bl"></div>
+          <div class="ae-corner br"></div>
+          <img class="ae-img" src="IMG_1527.gif" alt="Surge Esports"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news" class="section-pad">
+  <div class="container">
+    <div class="news-header">
+      <div>
+        <div class="sec-label">Latest Updates</div>
+        <h2 class="sec-title">News & <em>Drops</em>.</h2>
+      </div>
+      <a href="#" class="news-all">All Articles →</a>
+    </div>
+    <div class="news-grid">
+      <div class="news-big">
+        <div class="nb-img">
+          <div class="nb-img-inner">🎮</div>
+          <div class="news-tag-pill">Announcement</div>
+        </div>
+        <div class="nb-body">
+          <div class="nb-title">Surge Esports Goes Live — Welcome to the Org</div>
+          <div class="nb-excerpt">The wait is over. Surge Esports is officially open and ready to compete. We've been building behind the scenes — the brand, the vision, the team culture — and now it's time to show the Fortnite world what we're made of. Stay locked in.</div>
+          <div class="nb-meta">March 2025 · Surge Esports</div>
+        </div>
+      </div>
+      <div class="news-stack">
+        <div class="ns-card">
+          <div class="ns-tag">Fortnite</div>
+          <div class="ns-title">FNCS Open Qualifiers — Surge Enters the Arena</div>
+          <div class="ns-meta">March 2025</div>
+        </div>
+        <div class="ns-card">
+          <div class="ns-tag">Organization</div>
+          <div class="ns-title">First Partner Deal Secured — More Details Soon</div>
+          <div class="ns-meta">March 2025</div>
+        </div>
+        <div class="ns-card">
+          <div class="ns-tag">Community</div>
+          <div class="ns-title">Discord is Open — Come Build with Us</div>
+          <div class="ns-meta">March 2025</div>
+        </div>
+        <div class="ns-card">
+          <div class="ns-tag">Brand</div>
+          <div class="ns-title">Meet the Eagle — The Story Behind Our Logo</div>
+          <div class="ns-meta">March 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section id="partners" class="section-pad">
+  <div class="container">
+    <div class="partners-header">
+      <div>
+        <div class="sec-label">Sponsors & Partners</div>
+        <h2 class="sec-title">Our <em>Partners</em>.</h2>
+      </div>
+      <p class="partner-cta-note">Interested in backing an emerging esports org? We'd love to talk. Reach out and let's build something together.</p>
+    </div>
+
+    <div class="partner-tier">
+      <div class="tier-name">Founding Partners</div>
+      <div class="partner-row">
+        <div class="p-logo"><span>NEXUS TECH</span></div>
+        <div class="p-logo"><span>HYPERFRAME</span></div>
+      </div>
+    </div>
+
+    <div class="partner-tier">
+      <div class="tier-name">Community Partners</div>
+      <div class="partner-row">
+        <div class="p-logo"><span>VOLT ENERGY</span></div>
+        <div class="p-logo"><span>GRIDLOCK</span></div>
+        <div class="p-logo"><span>BITCRAFT</span></div>
+      </div>
+    </div>
+
+    <div class="partner-cta-box">
+      <div class="pcb-text">
+        <h3>Become a Partner</h3>
+        <p>We're an emerging org with a passionate community and big ambitions. Let's grow together.</p>
+      </div>
+      <a href="mailto:partnerships@surgeesports.gg" class="btn-gold">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section id="join" class="section-pad">
+  <div class="container">
+    <div class="join-inner">
+      <img class="join-eagle" src="IMG_1527.gif" alt="Surge"/>
+      <div class="sec-label">Be Part of It</div>
+      <h2 class="sec-title">Join the <em>Surge</em>.</h2>
+      <div class="gold-rule" style="margin:1.5rem auto 2rem;"></div>
+      <p>Whether you're a Fortnite player chasing a roster spot, a creator wanting to collab, or a fan ready to ride with us — there's a seat at the table. Come find your people.</p>
+      <div class="join-btns">
+        <a href="mailto:tryouts@surgeesports.gg" class="btn-gold">Apply for Tryouts</a>
+        <a href="https://discord.gg/" class="btn-outline">Join Our Discord</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="f-brand">
+        <a href="#" class="nav-logo" style="margin-bottom:.8rem; display:inline-flex;">
+          <img src="IMG_1527.gif" alt="Surge" style="width:30px;height:30px;"/>
+          <div class="nav-logo-text" style="font-size:1.2rem;">SURGE <span>ESPORTS</span></div>
+        </a>
+        <p>Rising through the ranks. Competing in Fortnite. Building a legacy from day one.</p>
+        <div class="f-socials">
+          <a href="#" class="soc">𝕏</a>
+          <a href="#" class="soc">▶</a>
+          <a href="#" class="soc">📸</a>
+          <a href="#" class="soc">💬</a>
+          <a href="#" class="soc">🎮</a>
+        </div>
+      </div>
+      <div class="f-col">
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="#partners">Partners</a></li>
+          <li><a href="#join">Join Us</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:info@surgeesports.gg">General</a></li>
+          <li><a href="mailto:partnerships@surgeesports.gg">Partnerships</a></li>
+          <li><a href="mailto:tryouts@surgeesports.gg">Tryouts</a></li>
+          <li><a href="mailto:media@surgeesports.gg">Media</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>Surge Esports</span>. All rights reserved.</p>
+      <p>Privacy · Terms · Cookies</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const cur = document.getElementById('cur'), curR = document.getElementById('cur-r');
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX+'px'; cur.style.top = e.clientY+'px';
+    curR.style.left = e.clientX+'px'; curR.style.top = e.clientY+'px';
+  });
+  document.querySelectorAll('a,button,.val-box,.ns-card,.news-big,.p-logo').forEach(el => {
+    el.addEventListener('mouseenter', () => { curR.style.width='52px'; curR.style.height='52px'; curR.style.borderColor='rgba(245,184,0,.8)'; });
+    el.addEventListener('mouseleave', () => { curR.style.width='32px'; curR.style.height='32px'; curR.style.borderColor='#f5b800'; });
+  });
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+</body>
+</html>
